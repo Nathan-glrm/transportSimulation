@@ -9,8 +9,8 @@ add_executable(MainProject main.cpp)
 set(SFML_ROOT "C:/dev/Transport/SFML-2.5.1")
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
-set (source "${CMAKE_SOURCE_DIR}/assets")
-set (destination "${CMAKE_CURRENT_BINARY_DIR}/assets")
+set (source "${CMAKE_SOURCE_DIR}/src/assets")
+set (destination "${CMAKE_CURRENT_BINARY_DIR}/src/assets")
 add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E create_symlink ${source} ${destination}
