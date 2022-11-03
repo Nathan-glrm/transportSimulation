@@ -18,13 +18,12 @@ public:
     sf::Vector2f getPositionWithDistance(const float t) const;
     sf::Vector2f getPositionWithDistanceByPercent(const float t) const;
     void calcPoint();
-    void draw(sf::RenderWindow & window) const;
+    void draw(sf::RenderWindow & window) const override;
 private:
     std::vector<sf::Vertex> listepoint;
     std::map<float, float> interpolation;
     sf::Vector2f fromControlPoint;
     sf::Vector2f toControlPoint;
-    float distance;
 };
 
 

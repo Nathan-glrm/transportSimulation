@@ -24,15 +24,15 @@ void BezierCurve::calcPoint(){
     //Calc length
     sf::Vector2f lastPosition = getPositionWithPercent(0);
     interpolation.emplace(0, 0);
-    distance = 0;
+    length = 0;
 
     for (int i = 1; i <= precisionLen; ++i) {
         float percent = (float)i / precisionLen;
         sf::Vector2f pos = getPositionWithPercent(percent);
         float dis = sqrt(pow(pos.x - lastPosition.x, 2) + pow(pos.y - lastPosition.y, 2));
         lastPosition = pos;
-        distance += dis;
-        interpolation.emplace(distance, percent);
+        length += dis;
+        interpolation.emplace(length, percent);
     }
 }
 
@@ -69,10 +69,9 @@ sf::Vector2f BezierCurve::getPositionWithDistance(const float t) const {
     //y = y1 + ((x – x1)/(x2 - x1) × (y2 - y1))
     float estimate = lower->second + ((t - lower->first)/(upper->first - lower->first) * (upper->second - lower->second));
     return getPositionWithPercent(estimate);
-
 }
 
 sf::Vector2f BezierCurve::getPositionWithDistanceByPercent(const float t) const {
-    return getPositionWithDistance(t*distance);
+    return getPositionWithDistance(t*length);
 }
 
