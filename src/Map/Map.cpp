@@ -33,11 +33,6 @@ void Map::constructMap(const std::string &nodeFileName, const std::string &links
         throw std::domain_error("File not open");
     }
 
-//    for (const auto& inter: intersectionList) {
-//        std::cout << std::distance(intersectionList.begin(), intersectionList.find(inter.first)) << std::endl;
-//    }
-
-
 
     std::cout << "Setup Path" << std::endl;
     std::ifstream linksFile(linksFileName);
@@ -59,6 +54,8 @@ void Map::constructMap(const std::string &nodeFileName, const std::string &links
     const float neutral = std::numeric_limits<float>::max();
     const int neutralInt = std::numeric_limits<int>::max();
 
+    //Initialisation des de la matrice de calcul
+    //TODO simplifier avec une seul boucle
     auto** matrixCarCalc = new float*[nodeList.size()];
     for (int i = 0; i < nodeList.size(); i++) {
         matrixCarCalc[i] = new float[nodeList.size()];
@@ -69,7 +66,7 @@ void Map::constructMap(const std::string &nodeFileName, const std::string &links
         }
     }
 
-
+    //Initialisation de la matrice de calcul pour les chemins existants
     for (auto path: pathList) {
         auto from = nodeList.find(path->getFrom().getName());
         auto to = nodeList.find(path->getTo().getName());
@@ -78,10 +75,10 @@ void Map::constructMap(const std::string &nodeFileName, const std::string &links
         }
         int indexFrom = (int) std::distance(nodeList.begin(), from);
         int indexTo = (int) std::distance(nodeList.begin(), to);
-        if (indexFrom)
         matrixCarCalc[indexFrom][indexTo] = path->getLength();
     }
 
+    //Intialisation de la matrice résultat
     matrixCar = new int*[nodeList.size()];
     for (int i = 0; i < nodeList.size(); i++) {
         matrixCar[i] = new int[nodeList.size()];
@@ -95,6 +92,8 @@ void Map::constructMap(const std::string &nodeFileName, const std::string &links
         }
     }
 
+    //Application de l'algorithme de Warshall
+    //TODO à déplacer dans une fonction
     for (int k = 0; k < nodeList.size(); k++){
         for (int i = 0; i < nodeList.size(); i++) {
             for (int j = 0; j < nodeList.size(); j++) {
@@ -113,6 +112,8 @@ void Map::constructMap(const std::string &nodeFileName, const std::string &links
     }
     delete [] matrixCarCalc;
 
+    //Output de la matrice pour deboguage
+    //TODO Supprimer cet output
     for (int i = 0; i < nodeList.size(); i++) {
         for (int j = 0; j < nodeList.size(); j++) {
             std::cout << matrixCar[i][j] << "\t";
