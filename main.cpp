@@ -18,7 +18,7 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
+		map.moveLoops();
 
         window.clear(sf::Color::Black);
         window.setView(map.getView());
