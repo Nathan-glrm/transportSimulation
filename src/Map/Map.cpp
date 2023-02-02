@@ -7,47 +7,49 @@
 #include <limits>
 #include "Map.h"
 #include "../utils/explode.h"
+#include "../utils/json.hpp"
+using json = nlohmann::json;
 
-Map::Map(const std::string &nodeFileName, const std::string &linksFileName)
+Map::Map(const std::string &jsonFile)
 : intersectionList(), nodeList() ,pathList(), placeList(), matrixCar(){
-    constructMap(nodeFileName, linksFileName);
+    constructMap(jsonFile);
 }
 
-void Map::constructMap(const std::string &nodeFileName, const std::string &linksFileName) {
+void Map::constructMap(const std::string &jsonFile) {
+
+	//Clear value, in case we force rebuild of the map
+	intersectionList.clear();
+	nodeList.clear();
+	pathList.clear();
+	placeList.clear();
+
+	//Open and setup jsondata
+	std::ifstream f(jsonFile);
+	json mapData = json::parse(f);
+
+
+
+
+
+
 
     /* Intersection */
-    std::cout << "Setup Node" << std::endl;
-    std::ifstream intersectionsFile(nodeFileName);
-    if (intersectionsFile.is_open()){
-        while(intersectionsFile.good()){
-            std::string line;
-            std::getline(intersectionsFile, line);
-            auto params = explode(line, ',');
+    std::cout << "Setup Nodes" << std::endl;
+	auto nodes = mapData["nodes"];
 
-            intersectionList.emplace(params[0], new Intersection(sf::Vector2f(std::stof(params[1]), std::stof(params[2]))));
-            //TODO implémentation temporaire des nodes
-            nodeList.emplace(params[0], new Node(params[0], sf::Vector2f(std::stof(params[1]), std::stof(params[2]))));
-        }
-    }
-    else{
-        throw std::domain_error("File not open");
-    }
+	for(auto & node : nodes){
+		intersectionList.emplace(node.at("name"), new Intersection(sf::Vector2f(node.at("coords").at("x"), node.at("coords").at("y"))));
+		//TODO implémentation temporaire des nodes
+		nodeList.emplace(node.at("name"), new Node(node.at("name"), sf::Vector2f(node.at("coords").at("x"), node.at("coords").at("y"))));
 
+	}
 
-    std::cout << "Setup Path" << std::endl;
-    std::ifstream linksFile(linksFileName);
-    if (linksFile.is_open()){
-        while(linksFile.good()){
-            std::string line;
-            std::getline(linksFile, line);
-            auto params = explode(line, ',');
+    std::cout << "Setup Paths" << std::endl;
+	auto paths = mapData["paths"];
+	for(auto & path : paths){
+		pathList.push_back(new Path(*nodeList.find(path.at("from"))->second, *nodeList.find(path.at("to"))->second));
+	}
 
-            pathList.push_back(new Path(*nodeList.find(params[0])->second, *nodeList.find(params[1])->second));
-        }
-    }
-    else{
-        throw std::domain_error("File not open");
-    }
 
     /* Matrix */
 
@@ -55,15 +57,12 @@ void Map::constructMap(const std::string &nodeFileName, const std::string &links
     const int neutralInt = std::numeric_limits<int>::max();
 
     //Initialisation des de la matrice de calcul
-    //TODO simplifier avec une seul boucle
     auto** matrixCarCalc = new float*[nodeList.size()];
     for (int i = 0; i < nodeList.size(); i++) {
         matrixCarCalc[i] = new float[nodeList.size()];
-    }
-    for (int i = 0; i < nodeList.size(); i++) {
-        for (int j = 0; j < nodeList.size(); j++) {
-            matrixCarCalc[i][j] = neutral;
-        }
+		for (int j = 0; j < nodeList.size(); j++) {
+			matrixCarCalc[i][j] = neutral;
+		}
     }
 
     //Initialisation de la matrice de calcul pour les chemins existants

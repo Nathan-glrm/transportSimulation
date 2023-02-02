@@ -1,0 +1,127 @@
+{
+  "nodes" : [
+    {
+      "name" : "a",
+      "coords" : {
+        "x" : 120,
+        "y": 90
+      }
+    },
+    {
+      "name" : "b",
+      "coords" : {
+        "x" : 550,
+        "y": 320
+      }
+    },
+    {
+      "name" : "c",
+      "coords" : {
+        "x" : 870,
+        "y": 770
+      }
+    },
+    {
+      "name" : "d",
+      "coords" : {
+        "x" : 200,
+        "y": 770
+      }
+    },
+    {
+      "name" : "e",
+      "coords" : {
+        "x" : 50,
+        "y": 800
+      }
+    },
+    {
+      "name" : "f",
+      "coords" : {
+        "x" : 450,
+        "y": 50
+      }
+    },
+    {
+      "name" : "g",
+      "coords" : {
+        "x" : 850,
+        "y": 100
+      }
+    },
+    {
+      "name" : "h",
+      "coords" : {
+        "x" : 500,
+        "y": 80
+      }
+    },
+    {
+      "name" : "i",
+      "coords" : {
+        "x" : 550,
+        "y": 50
+      }
+    }
+  ],
+  "paths" : [
+    {
+      "from" : "a",
+      "to" : "b"
+    },
+    {
+      "from" : "b",
+      "to" : "c"
+    },
+    {
+      "from" : "d",
+      "to" : "b"
+    },
+    {
+      "from" : "c",
+      "to" : "d"
+    },
+    {
+      "from" : "d",
+      "to" : "a"
+    },
+    {
+      "from" : "e",
+      "to" : "a"
+    },
+    {
+      "from" : "e",
+      "to" : "d"
+    },
+    {
+      "from" : "a",
+      "to" : "f"
+    },
+    {
+      "from" : "f",
+      "to" : "i"
+    },
+    {
+      "from" : "i",
+      "to" : "g"
+    },
+    {
+      "from" : "g",
+      "to" : "c"
+    },
+    {
+      "from" : "f",
+      "to" : "h",
+      "oneWay" : true
+    },
+    {
+      "from" : "h",
+      "to" : "i",
+      "oneWay": true
+    },
+    {
+      "from" : "b",
+      "to" : "i"
+    }
+  ]
+}

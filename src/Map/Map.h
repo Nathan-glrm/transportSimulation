@@ -15,11 +15,11 @@
 
 class Map {
 public:
-    Map(const std::string & nodeFileName, const std::string & linksFileName);
+    Map(const std::string & jsonFile);
+	void constructMap(const std::string & jsonFile);
     void getTrajetCarOnly(const Place & start, const Place & destination) const;
     void draw(sf::RenderWindow & window) const;
 private:
-    void constructMap(const std::string & nodeFileName, const std::string & linksFileName);
 
     std::map<std::string, Intersection *> intersectionList;
     std::map<std::string, Node *> nodeList;
