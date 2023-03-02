@@ -34,20 +34,39 @@ void Map::constructMap(const std::string &jsonFile) {
 
 
     /* Intersection */
-    std::cout << "Setup Nodes" << std::endl;
-	auto nodes = mapData["nodes"];
+    std::cout << "Setup intersections" << std::endl;
+	auto intersections = mapData["intersections"];
 
-	for(auto & node : nodes){
-		intersectionList.emplace(node.at("name"), new Intersection(sf::Vector2f(node.at("coords").at("x"), node.at("coords").at("y"))));
-		//TODO implémentation temporaire des nodes
-		nodeList.emplace(node.at("name"), new Node(node.at("name"), sf::Vector2f(node.at("coords").at("x"), node.at("coords").at("y"))));
+	for(auto & intersection : intersections){
+		//Get name from json
+		std::string intersectionId = intersection.at("name");
+		//Get coords from json
+		auto coords = sf::Vector2f(intersection.at("coords").at("x"),
+								   intersection.at("coords").at("y"));
+		//Create intersection @name at @coords
+		intersectionList.emplace(intersectionId, new Intersection(intersectionId, coords));
+
+
+
+
+		//TODO implémentation temporaire des intersections
+		//nodeList.emplace(intersection.at("name"), new Node(intersection.at("name"), sf::Vector2f(intersection.at("coords").at("x"), intersection.at("coords").at("y"))));
 
 	}
 
     std::cout << "Setup Paths" << std::endl;
 	auto paths = mapData["paths"];
 	for(auto & path : paths){
-		pathList.push_back(new Path(*nodeList.find(path.at("from"))->second, *nodeList.find(path.at("to"))->second));
+
+		//Dans intersection, faire la "demande" d'un chemin entre @FROM et @TO
+		auto from = intersectionList.find(path.at("from"))->second;
+		auto to = intersectionList.find(path.at("to"))->second;
+		std::array<Node *, 2> nodes = Intersection::createPathBetween(from, to);
+		nodeList.emplace(nodes[0]->getName(), nodes[0]);
+		nodeList.emplace(nodes[1]->getName(), nodes[1]);
+
+
+		pathList.push_back(new Path(*nodes[0], *nodes[1]));
 	}
 
 

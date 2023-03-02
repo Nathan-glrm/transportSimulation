@@ -13,12 +13,17 @@ class Node {
 public:
     explicit Node(const std::string & name, const sf::Vector2f & coords);
     const sf::Vector2f & getPosition() const;
-    void setPosition(const sf::Vector2f & position);
+    virtual void setPosition(const sf::Vector2f & position);
     const std::string & getName() const;
+	static std::string getNextId(){
+		return std::to_string(global_nodes_id++);
+	}
+
 private:
     sf::Vector2f coords;
     const std::string name;
-};
 
+	static int global_nodes_id;
+};
 
 #endif //MAINPROJECT_NODE_H

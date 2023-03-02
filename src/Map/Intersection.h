@@ -8,17 +8,37 @@
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics.hpp>
+#include <string>
+#include "Node.h"
 
 
-class Intersection {
+class Intersection : public Node{
 public:
-    explicit Intersection(const sf::Vector2f & position);
-    const sf::Vector2f & getPosition() const;
-    void setPosition(const sf::Vector2f & position);
+    Intersection(const std::string &name, const sf::Vector2f & position);
+	void setPosition(const sf::Vector2f &position) override;
     void draw(sf::RenderWindow & window) const;
+
+	/**
+	 *
+	 * @param from L'intersection de départ
+	 * @param to L'intersection d'arrivé
+	 * @param fromNode Une node tout juste créer qui servira a stocker les coordonnées du point d'entrée de From
+	 * @param toNode Une node tout juste créer qui servira a stocker les coordonnées du point d'entrée de To
+	 */
+	static std::array<Node *, 2> createPathBetween(const Intersection * from, const Intersection * to);
+
+
+	static float inter_size;
+protected:
+
+	void updateShape();
+
 private:
-    sf::Vector2f coords;
-    sf::RectangleShape shape;
+	const std::string name;
+    sf::CircleShape shape;
+
+
+
 };
 
 

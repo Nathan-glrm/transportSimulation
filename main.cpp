@@ -10,7 +10,6 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1200, 1000), "My window");
     //Create custom View to handle all camera movement
 	MapView mapView = MapView(&window);
-
 	//Create an in-simulation Map
     Map map("./assets/MapData/mapData.json");
 

@@ -3,9 +3,9 @@
 //
 
 #include "Node.h"
+int Node::global_nodes_id = 0;
 
-Node::Node(const std::string &name, const sf::Vector2f &coords)  : name(name), coords() {
-    setPosition(coords);
+Node::Node(const std::string &name, const sf::Vector2f &coords)  : name(name), coords(coords) {
 }
 
 const sf::Vector2f &Node::getPosition() const {

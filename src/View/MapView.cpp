@@ -10,7 +10,9 @@ const float MapView::CAMOFFSET = .2;
 MapView::MapView(sf::RenderWindow * window) :
         window(window),isMoving(false), view(sf::Vector2f(0.f, 0.f), sf::Vector2f(window->getSize().x, window->getSize().y)),
 		isDownPressed(false), isLeftPressed(false), isRightPressed(false), isUpPressed(false)
-{}
+{
+	view.setCenter(450,400);
+}
 
 
 
